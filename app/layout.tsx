@@ -1,3 +1,4 @@
+import AuthProvider from "./AuthProvider";
 import NavMenu from "./NavMenu";
 import "./globals.css";
 
@@ -12,11 +13,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
-        <NavMenu />
-        <main className="children">{children}</main>
-      </body>
-    </html>
+    <AuthProvider>
+      <html lang="en">
+        <body>
+          <NavMenu />
+          <main className="children">{children}</main>
+        </body>
+      </html>
+    </AuthProvider>
   );
 }
