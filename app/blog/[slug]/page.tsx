@@ -1,5 +1,3 @@
-export const revalidate = 420;
-
 interface Post {
   title: string;
   slug: string;
@@ -9,20 +7,6 @@ interface Post {
 interface Props {
   params: {
     slug: string;
-  };
-}
-
-export async function getStaticPaths() {
-  const posts: Post[] = await fetch("http://localhost:3000/api/content").then(
-    (res) => res.json()
-  );
-
-  return {
-    paths: posts.map((post) => ({
-      params: {
-        slug: post.slug,
-      },
-    })),
   };
 }
 
