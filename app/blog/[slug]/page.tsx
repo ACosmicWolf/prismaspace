@@ -12,7 +12,7 @@ interface Props {
   };
 }
 
-export async function getStaticParams() {
+export async function getStaticPaths() {
   const posts: Post[] = await fetch("http://localhost:3000/api/content").then(
     (res) => res.json()
   );
