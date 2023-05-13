@@ -1,8 +1,5 @@
-interface Post {
-  title: string;
-  slug: string;
-  content: string;
-}
+import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 
 interface Props {
   params: {
@@ -11,18 +8,50 @@ interface Props {
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const posts: Post[] = await fetch("http://localhost:3000/api/content").then(
-    (res) => res.json()
-  );
+  const blog = await prisma.blog.findUnique({
+    where: {
+      id: params.slug,
+    },
+  });
 
-  const post = posts.find((post) => post.slug === params.slug)!;
+  const author = await prisma.user.findUnique({
+    where: {
+      id: blog?.authorId,
+    },
+  });
 
-  console.log(post);
+  const comments = await prisma.comment.findMany({
+    where: {
+      blogId: blog?.id,
+    },
+    include: {
+      commenter: true,
+    },
+  });
 
   return (
     <main>
-      <h1>{post.title}</h1>
-      <p>{post.content}</p>
+      <h1>{blog?.title}</h1>
+      <span>
+        Author: <Link href={`/users/${author?.id}`}>{author?.name}</Link>
+      </span>
+      <p>{blog?.body}</p>
+
+      <h2>Comments</h2>
+
+      {comments.map((comment) => {
+        return (
+          <div key={comment.id}>
+            <p>{comment.body}</p>
+            <span>
+              Commenter:{" "}
+              <Link href={`/users/${comment.commenterId}`}>
+                {comment.commenter.name}
+              </Link>
+            </span>
+          </div>
+        );
+      })}
     </main>
   );
 }

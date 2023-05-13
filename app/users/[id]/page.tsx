@@ -1,5 +1,6 @@
 import FollowButton from "@/components/FollowButton/FollowButton";
 import { prisma } from "@/lib/prisma";
+import { Metadata } from "next";
 
 type Props = {
   params: {
@@ -7,13 +8,14 @@ type Props = {
   };
 };
 
-export async function generateMetaData({ params }: Props) {
-  const user = await prisma.user.findUnique({ where: { id: params.id } });
+/* TODO: Find out why this does not work */
+// export async function generateMetaData({ params }: Props): Promise<Metadata> {
+//   const user = await prisma.user.findUnique({ where: { id: params.id } });
 
-  return {
-    title: `Profile of ${user?.name}`,
-  };
-}
+//   return {
+//     title: `Profile of ${user?.name}`,
+//   };
+// }
 
 export default async function UserProfile({ params }: Props) {
   const user = await prisma.user.findUnique({ where: { id: params.id } });

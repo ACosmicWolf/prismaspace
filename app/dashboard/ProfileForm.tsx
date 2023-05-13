@@ -1,9 +1,10 @@
 "use client";
 
+import { User } from "@prisma/client";
 import styles from "./Dashboard.module.css";
 
 type Props = {
-  user: any;
+  user: User | null;
 };
 
 export function ProfileForm({ user }: Props) {
